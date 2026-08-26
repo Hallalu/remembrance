@@ -1,0 +1,30 @@
+{
+  "id": "4a67059f-cf83-4bb4-958a-505588896875",
+  "app": "Remembrance",
+  "project": "remembrance",
+  "title": "Worldwide record — lives taken for their faith, grouped by religion",
+  "status": "active",
+  "current": "Building Timetable-themed dashboard — rainbow bar, grouped-by-religion bars, era filter, dated event log",
+  "note": "",
+  "tasks": [
+    {
+      "text": "Research real data",
+      "note": "Sourced death tolls compiled: Holocaust 6M (Yad Vashem), Armenian 1.5M, Assyrian 250k, Rohingya 6.7k-25k (MSF/UN), Yazidi 3.1k (PLOS), Srebrenica 8k, Sikh '84 3.35k, Open Doors Christian annual ~5k, +dated events; ranges+caveats kept",
+      "status": "done",
+      "wave": ""
+    },
+    {
+      "text": "Design + build",
+      "note": "Real data embedded; honest ranges + sources; respectful memorial tone",
+      "status": "active",
+      "wave": ""
+    },
+    {
+      "text": "Verify + deploy",
+      "note": "Deploy Cloudflare Worker, prove it works in the browser, screenshot",
+      "status": "pending",
+      "wave": ""
+    }
+  ],
+  "started": 1787776476292
+}
