@@ -256,6 +256,7 @@ footer .mem{font-family:"Playfair Display",serif;font-style:italic;font-size:15p
           <button role="tab" data-view="byrel" aria-selected="true">Overview</button>
           <button role="tab" data-view="charts" aria-selected="false">Charts</button>
           <button role="tab" data-view="timeline" aria-selected="false">Timeline</button>
+          <button role="tab" data-view="recent" aria-selected="false">Recent</button>
           <button role="tab" data-view="bycountry" aria-selected="false">By country</button>
           <button role="tab" data-view="about" aria-selected="false">About</button>
         </div>
@@ -411,9 +412,25 @@ function renderCharts(){
   const gmax=segs.length?segs[0].value:1;
   const gbars=segs.map(s=>`<div class="gbar"><div class="gbl"><span class="reldot" style="background:${s.color}"></span>${s.label}</div><div class="track sm"><span class="efill" style="width:${Math.max(s.value/gmax*100,2).toFixed(1)}%;background:${s.color}"></span></div><div class="gbv">${fmtFull(s.value)}</div></div>`).join('');
   const ann=[[2021,4761],[2022,5898],[2023,5621],[2024,4998],[2025,4849]];
-  const amax=Math.max.apply(null,ann.map(a=>a[1]));
-  const abars=ann.map(a=>`<div class="vbar"><div class="vb" style="height:${(a[1]/amax*150).toFixed(0)}px;background:${col('Christian')}"></div><div class="vv">${(a[1]/1000).toFixed(1)}k</div><div class="vl">${a[0]}</div></div>`).join('');
-  const yearCard = state.lens==='faith' ? `<div class="chartcard"><h4>Christians killed for their faith, by year</h4><div class="cs">Annual count from Open Doors — the one continuous yearly series available (framing contested).</div><div class="vbars">${abars}</div></div>` : '';
+  const perDay=ann.map(a=>[a[0],a[1]/365]);
+  const pdmax=Math.max.apply(null,perDay.map(a=>a[1]));
+  const pdbars=perDay.map(a=>`<div class="vbar"><div class="vb" style="height:${(a[1]/pdmax*150).toFixed(0)}px;background:${col('Christian')}"></div><div class="vv">${a[1].toFixed(1)}</div><div class="vl">${a[0]}</div></div>`).join('');
+  const perDayCard = state.lens==='faith' ? `<div class="chartcard"><h4>Christians killed per day, by year</h4><div class="cs">Per day = annual ÷ 365, from Open Doors' count (framing contested). Only Christians have a continuous annual series — other faiths' killings are episodic. Open Doors revised its methodology ~2020, so earlier years (e.g. 7,106 in 2016) aren't directly comparable.</div><div class="vbars">${pdbars}</div></div>` : '';
+  // who did the killing (perpetrator relationship)
+  const pk={'Another religion':0,'Sectarian (intra-faith)':0,'Secular / racial':0};
+  evs.forEach(e=>{ if(e.interfaith) pk['Another religion']+=e.rep; else if(e.by&&/sectarian|intra-Islam/i.test(e.by)) pk['Sectarian (intra-faith)']+=e.rep; else pk['Secular / racial']+=e.rep; });
+  const pcol={'Another religion':'#b5533a','Sectarian (intra-faith)':'#b08a2a','Secular / racial':'#6b7a93'};
+  const pmax=Math.max.apply(null,Object.values(pk).concat(1));
+  const pbars=Object.entries(pk).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="gbar"><div class="gbl"><span class="reldot" style="background:${pcol[k]}"></span>${k}</div><div class="track sm"><span class="efill" style="width:${Math.max(v/pmax*100,2).toFixed(1)}%;background:${pcol[k]}"></span></div><div class="gbv">${fmtFull(v)}</div></div>`).join('');
+  const perpCard = pbars ? `<div class="chartcard"><h4>Who did the killing</h4><div class="cs">Documented deaths in this era by the perpetrator's relationship to the victim — another religion, an intra-faith sect, or a secular/racial ideology.</div><div class="gbars">${pbars}</div></div>` : '';
+  // top countries (where a country registry exists)
+  let countryCard='';
+  if(DATA.countries&&DATA.countries.deaths){
+    const cd=DATA.countries.deaths.filter(d=>!d.excludeFromTotal&&(state.rel==='all'||(d.faiths||[]).includes(state.rel))).slice().sort((a,b)=>b.rep-a.rep).slice(0,8);
+    const cmax=cd.length?cd[0].rep:1;
+    const cbars=cd.map(d=>`<div class="gbar"><div class="gbl"><span class="reldot" style="background:${col((d.faiths||[])[0]||'')}"></span>${d.country}</div><div class="track sm"><span class="efill" style="width:${Math.max(d.rep/cmax*100,2).toFixed(1)}%;background:${col((d.faiths||[])[0]||'')}"></span></div><div class="gbv">${fmtFull(d.rep)}</div></div>`).join('');
+    countryCard=`<div class="chartcard"><h4>Top countries by documented deaths</h4><div class="cs">Where the documented killings occurred (mixes one-off genocides &amp; recent annual counts).</div><div class="gbars">${cbars}</div></div>`;
+  }
   const cP=DATA.events.filter(e=>!e.excludeFromTotal&&e.y0<1900).reduce((s,e)=>s+e.rep,0);
   const c20=DATA.events.filter(e=>!e.excludeFromTotal&&e.y0>=1900&&e.y0<2000).reduce((s,e)=>s+e.rep,0);
   const c21=DATA.events.filter(e=>!e.excludeFromTotal&&e.y0>=2000).reduce((s,e)=>s+e.rep,0);
@@ -424,10 +441,28 @@ function renderCharts(){
       <div class="donut-wrap">${donutSVG(segs,180)}<div class="lgd">${legend||'<div class="lg">No records in this view</div>'}</div></div></div>
     <div class="chartcard"><h4>Deaths by ${gw}</h4><div class="cs">Representative documented figures per group, this era — changes with the lens above.</div>
       <div class="gbars">${gbars||'<div class="lg">No records in this view</div>'}</div></div>
-    ${yearCard}
     <div class="chartcard"><h4>Deaths by era</h4><div class="cs">Documented representative figures. The largest era necessarily dominates — mind the scale.</div>
       <div class="ebars">${erow('Before 1900',cP,'#8B6BB0')}${erow('1900–1999',c20,'#4F7CD4')}${erow('2000–today',c21,'#2E9E78')}</div></div>
+    ${perpCard}
+    ${countryCard}
+    ${perDayCard}
   </div>`;
+}
+
+function renderRecent(){
+  const yr=2014;
+  const evs=DATA.events.filter(e=>e.y1>=yr && !e.excludeFromTotal && (state.rel==='all'||e.rel===state.rel));
+  if(!evs.length) return `<div class="scale-note">No documented records since ${yr} in this view.</div>`;
+  const g={}; evs.forEach(e=>g[e.rel]=(g[e.rel]||0)+e.rep);
+  const rows=Object.entries(g).map(([rel,v])=>({rel,v})).sort((a,b)=>b.v-a.v);
+  const max=rows[0].v||1;
+  let html=`<div class="secttl">Most targeted since ${yr} <span>— documented deaths in roughly the last decade. Click a group to see its record.</span></div>`;
+  html+=rows.map(r=>`<div class="relrow" data-rel="${r.rel}" role="button" tabindex="0"><div class="rel-name"><span class="reldot" style="background:${col(r.rel)}"></span>${r.rel}</div><div class="track"><span class="fill" style="width:0;background:${col(r.rel)}" data-w="${Math.max(r.v/max*100,2.5)}"></span></div><div class="rel-count"><div class="n">${fmtFull(r.v)}</div></div></div>`).join('');
+  const list=evs.slice().sort((a,b)=>b.y0-a.y0);
+  html+=`<div class="secttl" style="margin-top:14px">Recent events <span>— since ${yr}, newest first</span></div><div class="log">`;
+  html+=list.map(e=>`<div class="logcard"><div class="yr">${e.y0}</div><div class="levent"><div class="t"><span class="reldot" style="background:${col(e.rel)}"></span>${e.event}${e.contested?'<span class="tag contested">contested</span>':''}</div><div class="meta">${e.rel} · ${e.region}</div><div class="byl">By: ${e.by||'—'} ${byTag(e)}</div><div class="note">${e.note}</div><div class="src">Source: ${e.src}</div></div><div class="lcount"><div class="n">${e.rep?fmtFull(e.rep):'—'}</div></div></div>`).join('');
+  html+=`</div>`;
+  return html;
 }
 
 function renderByCountry(){
@@ -510,6 +545,7 @@ function render(){
   if(state.view==='byrel') p.innerHTML=renderByReligion();
   else if(state.view==='charts') p.innerHTML=renderCharts();
   else if(state.view==='timeline') p.innerHTML=renderTimeline();
+  else if(state.view==='recent') p.innerHTML=renderRecent();
   else if(state.view==='bycountry') p.innerHTML=renderByCountry();
   else p.innerHTML=renderAbout();
   // animate bars
