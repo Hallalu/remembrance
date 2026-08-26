@@ -250,6 +250,7 @@ footer .mem{font-family:"Playfair Display",serif;font-style:italic;font-size:15p
           <button class="lensbtn" data-lens="faith" aria-pressed="true">By faith</button>
           <button class="lensbtn" data-lens="race" aria-pressed="false">By race</button>
           <button class="lensbtn" data-lens="ethnicity" aria-pressed="false">By ethnicity</button>
+          <button class="lensbtn" data-lens="children" aria-pressed="false">By children</button>
         </div>
         <span class="navdiv" aria-hidden="true"></span>
         <div class="ngroup" id="tabs" role="tablist">
@@ -566,9 +567,9 @@ function setLens(l){
   document.querySelectorAll('#lensSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lens===l?'true':'false'));
   document.querySelectorAll('#eraSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.era==='all'?'true':'false'));
   const sel=$('#relFilter');
-  sel.innerHTML='<option value="all">'+(l==='faith'?'All faiths':l==='race'?'All races':'All ethnicities')+'</option>';
+  sel.innerHTML='<option value="all">'+(l==='faith'?'All faiths':l==='race'?'All races':l==='ethnicity'?'All ethnicities':'All types')+'</option>';
   Object.keys(DATA.religions||{}).forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
-  document.querySelector('.brand .sub').textContent=l==='faith'?'In memory of those killed for their faith — grouped by religion':l==='race'?'In memory of those killed for their race — documented events, honest about myth':'In memory of those killed for their ethnicity — grouped by ethnic group';
+  document.querySelector('.brand .sub').textContent=l==='faith'?'In memory of those killed for their faith — grouped by religion':l==='race'?'In memory of those killed for their race — documented events, honest about myth':l==='ethnicity'?'In memory of those killed for their ethnicity — grouped by ethnic group':'In memory of children killed — school attacks, massacres, and the young victims of genocide';
   render();
 }
 
@@ -585,7 +586,7 @@ $('#nextEra').addEventListener('click',()=>setEra(eraOrder[(eraOrder.indexOf(sta
 $('#printBtn').addEventListener('click',()=>{document.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%');setTimeout(()=>window.print(),80);});
 
 function boot(){
-  LENS = {faith: DATA, race: DATA.race, ethnicity: DATA.ethnicity};
+  LENS = {faith: DATA, race: DATA.race, ethnicity: DATA.ethnicity, children: DATA.children};
   $('#updatedTxt').textContent='Last updated '+(DATA.updated||'—')+' · data refreshes as new reports are verified';
   setLens('faith');
 }

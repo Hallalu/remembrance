@@ -172,5 +172,28 @@
       {"stat":"3.3–5M","label":"Ukrainians died in the Holodomor famine-genocide of 1932–33.","src":"Britannica"},
       {"stat":"first of the 20th c.","label":"the Herero & Nama genocide (1904–08) is often called the century's first.","src":"Scholarship"}
     ]
+  },
+  "children": {
+    "religions": {"School & youth attacks":{"color":"#D9694A"},"Genocide (child victims)":{"color":"#7A6AD0"},"Gendercide":{"color":"#C361A0"}},
+    "events": [
+      {"rel":"Genocide (child victims)","event":"Children murdered in the Holocaust","y0":1941,"y1":1945,"low":1000000,"high":1500000,"rep":1500000,"region":"Europe","by":"Nazi Germany","interfaith":false,"src":"Yad Vashem · USHMM","note":"An estimated 1.5 million children, most of them Jewish, were murdered in the Holocaust. This overlaps the Faith and Ethnicity records — it re-cuts the same tragedy by age."},
+      {"rel":"School & youth attacks","event":"Beslan school siege","y0":2004,"y1":2004,"low":186,"high":186,"rep":186,"region":"Russia (North Ossetia)","by":"Islamist militants","interfaith":false,"src":"3 Sep 2004","note":"186 children were among 334 killed when militants seized School No. 1."},
+      {"rel":"School & youth attacks","event":"Peshawar school massacre","y0":2014,"y1":2014,"low":134,"high":134,"rep":134,"region":"Pakistan","by":"Pakistani Taliban (TTP)","interfaith":false,"src":"16 Dec 2014","note":"At least 134 students were murdered at an army-run school."},
+      {"rel":"School & youth attacks","event":"Utøya youth-camp massacre","y0":2011,"y1":2011,"low":69,"high":69,"rep":69,"region":"Norway","by":"Far-right terrorist","interfaith":false,"src":"22 Jul 2011","note":"A far-right terrorist murdered 69 people, most of them teenagers, at a youth camp (77 including the Oslo bombing)."},
+      {"rel":"School & youth attacks","event":"Bath School disaster","y0":1927,"y1":1927,"low":38,"high":38,"rep":38,"region":"United States (Michigan)","by":"Bomber","interfaith":false,"src":"1927","note":"38 children were killed in a school bombing — still the deadliest school attack in US history."},
+      {"rel":"School & youth attacks","event":"Sandy Hook Elementary shooting","y0":2012,"y1":2012,"low":20,"high":20,"rep":20,"region":"United States (Connecticut)","by":"Gunman","interfaith":false,"src":"14 Dec 2012","note":"20 young children and 6 educators were killed."},
+      {"rel":"School & youth attacks","event":"Uvalde (Robb Elementary) shooting","y0":2022,"y1":2022,"low":19,"high":19,"rep":19,"region":"United States (Texas)","by":"Gunman","interfaith":false,"src":"24 May 2022","note":"19 children and 2 teachers were killed."},
+      {"rel":"School & youth attacks","event":"Dunblane school massacre","y0":1996,"y1":1996,"low":16,"high":16,"rep":16,"region":"Scotland","by":"Gunman","interfaith":false,"src":"13 Mar 1996","note":"16 children and a teacher were killed; the UK's only school shooting, it led to a handgun ban."}
+    ],
+    "debate": [
+      {"topic":"Abortion — the figures you asked for, and why they are shown separately","body":"Worldwide, the WHO estimates ~73 million induced abortions each year (~200,000 a day). In the US, ~630,000–930,000 a year (CDC / Guttmacher); by reported race in 2021 (CDC): non-Hispanic Black 41.5%, white 30.2%, Hispanic 21.8%, other 6.5% — the Black rate several times the white rate. BUT whether abortion is 'the killing of a child or person' is one of the most contested moral, religious and legal questions; there is no consensus, abortion is legal in most countries, and medicine and law generally do not classify it as homicide. These figures are shown as requested DATA, not as a claim that abortion is killing, and are kept OUT of the documented-killings totals above.","src":"WHO · CDC · Guttmacher"},
+      {"topic":"Gendercide — the 'missing girls'","body":"Sex-selective abortion and female infanticide have produced an estimated 100+ million 'missing' women and girls, overwhelmingly in parts of South and East Asia. Female infanticide (killing born girls) is documented killing; sex-selective abortion falls under the contested category above. The scale is vast but hard to itemise precisely.","src":"UN · Amartya Sen · scholarship"},
+      {"topic":"These children overlap the other lenses","body":"Most children counted here were also victims in the Faith, Race or Ethnicity records (e.g. the 1.5M children in the Holocaust). This lens re-cuts the same tragedies by age and does not add to the other totals.","src":"Compiled"}
+    ],
+    "context": [
+      {"stat":"~1.5M","label":"children, most of them Jewish, murdered in the Holocaust.","src":"Yad Vashem"},
+      {"stat":"186","label":"children killed in the 2004 Beslan school siege.","src":"CNN"},
+      {"stat":"~73M/yr","label":"induced abortions worldwide (WHO) — shown as data; its moral status is deeply contested and it is kept out of the killings totals.","src":"WHO"}
+    ]
   }
 }
