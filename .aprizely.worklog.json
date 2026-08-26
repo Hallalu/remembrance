@@ -3,8 +3,8 @@
   "app": "Remembrance",
   "project": "remembrance",
   "title": "Worldwide record — lives taken for their faith, grouped by religion",
-  "status": "active",
-  "current": "Building Timetable-themed dashboard — rainbow bar, grouped-by-religion bars, era filter, dated event log",
+  "status": "done",
+  "current": "Done ✓",
   "note": "",
   "tasks": [
     {
@@ -16,15 +16,16 @@
     {
       "text": "Design + build",
       "note": "Real data embedded; honest ranges + sources; respectful memorial tone",
-      "status": "active",
+      "status": "done",
       "wave": ""
     },
     {
       "text": "Verify + deploy",
       "note": "Deploy Cloudflare Worker, prove it works in the browser, screenshot",
-      "status": "pending",
+      "status": "done",
       "wave": ""
     }
   ],
-  "started": 1787776476292
+  "started": 1787776476292,
+  "reported": true
 }

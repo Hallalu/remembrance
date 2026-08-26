@@ -196,11 +196,17 @@ footer .mem{font-family:"Playfair Display",serif;font-style:italic;font-size:15p
   .secttl,.sev-note,.sevgrp{padding-left:12px;padding-right:12px}
   .charts{padding:12px}
 }
-/* lens toggle */
-.lensbar{display:flex;justify-content:center;margin-top:20px}
-.seg.lens{padding:5px}
-.seg.lens button{font-size:14px;padding:9px 18px}
-.seg.lens button[aria-pressed="true"]{background:linear-gradient(120deg,var(--blue-2),var(--blue));color:#fff}
+/* single unified top nav bar: lens + views together */
+.hspacer{min-height:1px}
+.navrow{display:flex;justify-content:center;margin-top:22px}
+.navbar{display:inline-flex;align-items:center;gap:3px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow-sm);flex-wrap:wrap;justify-content:center;max-width:100%}
+.navbar .ngroup{display:inline-flex;gap:2px;flex-wrap:wrap}
+.navdiv{width:1px;align-self:stretch;background:var(--line);margin:4px 6px}
+.navbar button{border:0;background:none;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.15s}
+.navbar button:hover{color:var(--ink)}
+.navbar .lensbtn[aria-pressed="true"]{background:linear-gradient(120deg,var(--blue-2),var(--blue));color:#fff}
+.navbar #tabs button[aria-selected="true"]{background:var(--blue-wash);color:var(--blue)}
+@media(max-width:640px){.navdiv{display:none}.navbar{gap:2px}}
 /* per-group bars in charts */
 .gbars{display:flex;flex-direction:column;gap:10px}
 .gbar{display:grid;grid-template-columns:118px 1fr 74px;align-items:center;gap:10px}
@@ -232,20 +238,24 @@ footer .mem{font-family:"Playfair Display",serif;font-style:italic;font-size:15p
         <h1>Remembrance<span class="dot">.</span></h1>
         <div class="sub">In memory of those killed for their faith — a worldwide record, grouped by religion</div>
       </div>
-      <div class="tabs" id="tabs" role="tablist">
-        <button role="tab" data-view="byrel" aria-selected="true">By religion</button>
-        <button role="tab" data-view="charts" aria-selected="false">Charts</button>
-        <button role="tab" data-view="timeline" aria-selected="false">Timeline</button>
-        <button role="tab" data-view="bycountry" aria-selected="false">By country</button>
-        <button role="tab" data-view="about" aria-selected="false">About</button>
-      </div>
+      <div class="hspacer"></div>
     </div>
 
-    <div class="lensbar">
-      <div class="seg lens" id="lensSeg" role="group" aria-label="Lens">
-        <button data-lens="faith" aria-pressed="true">By faith</button>
-        <button data-lens="race" aria-pressed="false">By race</button>
-        <button data-lens="ethnicity" aria-pressed="false">By ethnicity</button>
+    <div class="navrow">
+      <div class="navbar">
+        <div class="ngroup" id="lensSeg" role="group" aria-label="Lens">
+          <button class="lensbtn" data-lens="faith" aria-pressed="true">By faith</button>
+          <button class="lensbtn" data-lens="race" aria-pressed="false">By race</button>
+          <button class="lensbtn" data-lens="ethnicity" aria-pressed="false">By ethnicity</button>
+        </div>
+        <span class="navdiv" aria-hidden="true"></span>
+        <div class="ngroup" id="tabs" role="tablist">
+          <button role="tab" data-view="byrel" aria-selected="true">Overview</button>
+          <button role="tab" data-view="charts" aria-selected="false">Charts</button>
+          <button role="tab" data-view="timeline" aria-selected="false">Timeline</button>
+          <button role="tab" data-view="bycountry" aria-selected="false">By country</button>
+          <button role="tab" data-view="about" aria-selected="false">About</button>
+        </div>
       </div>
     </div>
 
@@ -519,7 +529,6 @@ function setLens(l){
   const sel=$('#relFilter');
   sel.innerHTML='<option value="all">'+(l==='faith'?'All faiths':l==='race'?'All races':'All ethnicities')+'</option>';
   Object.keys(DATA.religions||{}).forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
-  document.querySelector('#tabs button[data-view="byrel"]').textContent=l==='faith'?'By religion':l==='race'?'By race':'By ethnicity';
   document.querySelector('.brand .sub').textContent=l==='faith'?'In memory of those killed for their faith — grouped by religion':l==='race'?'In memory of those killed for their race — documented events, honest about myth':'In memory of those killed for their ethnicity — grouped by ethnic group';
   render();
 }

@@ -1,0 +1,27 @@
+{
+ "title":"Remembrance — killed for faith / race / ethnicity, a sourced memorial record",
+ "summary":"A continuously-updatable memorial dashboard of people killed for their faith, race or ethnicity — 3-lens toggle, grouped bars, charts (donut + per-group bars + by-year + era), a dated timeline with NAMED PERPETRATORS, by-country deaths + persecution-severity, and a methodology section that presents the counter-evidence. Timetable theme + rainbow bar. Deployed on Cloudflare + git (github.com/Hallalu/remembrance).",
+ "tasks":[
+  {"text":"Research real data","done":true,"desc":"~24 sourced searches: Open Doors, Pew, USCIRF, UN, MSF, PLOS, ICTY, HRW, ACLED, EJI, Yad Vashem — ranges + caveats"},
+  {"text":"Design + build","done":true,"desc":"Timetable-theme dashboard; 3 lenses; charts; timeline w/ perpetrators; by-country deaths+severity; Before-1900→2026 era; per-day; print/PDF"},
+  {"text":"Verify + deploy","done":true,"desc":"Feature-by-feature browser verification (all 3 lenses, charts, filters, timeline, print); deployed Cloudflare + pushed to git"}
+ ],
+ "metrics":[
+  {"label":"Sourced searches","value":24},
+  {"label":"Faith events","value":27},
+  {"label":"Race + ethnicity groups","value":19},
+  {"label":"Lenses","value":3},
+  {"label":"Sources","value":"15+"}
+ ],
+ "features":["3-lens toggle (Faith · Race · Ethnicity)","Grouped bars per lens","Charts: donut share + per-group bars + Open-Doors by-year + deaths-by-era","By-country documented deaths + USCIRF/Pew severity","Timeline with named perpetrators + interfaith/sectarian/ideological tags","Before-1900 to 2026 era filter","Per-day reported rate (contested)","Print/PDF","Runtime-updatable data.json","Rainbow bar + Timetable theme"],
+ "findings":[
+  "The 'killed for their religion' framing is genuinely contested — esp. Nigeria: ACLED/HRW find farmer-herder conflict & banditry kill all faiths, not purely religious persecution. Flagged per-entry.",
+  "Open Doors' method is externally audited but criticised as 'home-made' with hard attribution + an auditor tied to its research arm; presented as advocacy-linked estimate, not a census.",
+  "'White genocide' is a debunked white-nationalist conspiracy theory (SPLC) — included only documented events (Boer camps, Haiti 1804) and stated the myth plainly.",
+  "No faith or ethnicity is only victim or only perpetrator — Orthodox Christian forces (Srebrenica), Hindu mobs (1984), Buddhist-majority military (Rohingya), Hutu/Tutsi both directions."
+ ],
+ "insights":[
+  "A critique is a claim too: verified the critic, not just the source; kept wide ranges; excluded the most contested from totals; never invented a restriction.",
+  "Reusable pattern: one render layer + datasets keyed identically = an N-lens toggle with zero per-lens rendering code."
+ ]
+}
