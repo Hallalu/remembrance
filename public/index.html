@@ -353,26 +353,33 @@ function filtered(){return DATA.events.filter(e=>inEra(e)&&(state.rel==='all'||e
 function yrs(e){return e.y0===e.y1?(''+e.y0):(e.y0+'–'+(''+e.y1).slice(-2));}
 function rangeTxt(e){return e.low===e.high?'':fmtFull(e.low)+'–'+fmtFull(e.high);}
 
-function totalInView(){return filtered().filter(e=>!e.excludeFromTotal).reduce((s,e)=>s+e.rep,0);}
+function totalInView(){return filtered().filter(e=>!e.excludeFromTotal && !e.annual).reduce((s,e)=>s+e.rep,0);}
 
 function renderByReligion(){
   const evs=filtered();
   const groups={};
-  evs.forEach(e=>{ if(e.excludeFromTotal) return; (groups[e.rel]=groups[e.rel]||{sum:0,lo:0,hi:0}); groups[e.rel].sum+=e.rep; groups[e.rel].lo+=e.low; groups[e.rel].hi+=e.high; });
-  const rows=Object.entries(groups).map(([rel,g])=>({rel,...g})).sort((a,b)=>b.sum-a.sum);
+  evs.forEach(e=>{ if(e.excludeFromTotal) return; const g=(groups[e.rel]=groups[e.rel]||{sum:0,lo:0,hi:0,annual:false,contested:false,natural:false}); g.sum+=e.rep; g.lo+=e.low; g.hi+=e.high; if(e.annual)g.annual=true; if(e.contested)g.contested=true; if(e.natural)g.natural=true; });
+  const all=Object.entries(groups).map(([rel,g])=>({rel,...g}));
+  const kill=all.filter(g=>!g.annual).sort((a,b)=>b.sum-a.sum);
+  const annualG=all.filter(g=>g.annual).sort((a,b)=>b.sum-a.sum);
   const excluded=evs.filter(e=>e.excludeFromTotal);
-  if(!rows.length) return `<div class="scale-note">No records in this view.</div>`;
-  const max=rows[0].sum||1;
-  let html=rows.map(r=>{
+  if(!kill.length&&!annualG.length) return `<div class="scale-note">No records in this view.</div>`;
+  const killMax=kill.length?kill[0].sum:1, annMax=annualG.length?annualG[0].sum:1;
+  const rowHtml=(r,max,suffix,tag)=>{
     const w=Math.max(r.sum/max*100,2.5);
     const rng=(r.lo!==r.hi)?`${fmtFull(r.lo)}–${fmtFull(r.hi)}`:'';
     return `<div class="relrow" data-rel="${r.rel}" role="button" tabindex="0">
-      <div class="rel-name"><span class="reldot" style="background:${col(r.rel)}"></span>${r.rel}</div>
+      <div class="rel-name"><span class="reldot" style="background:${col(r.rel)}"></span>${r.rel}${tag||''}</div>
       <div class="track"><span class="fill" style="width:0;background:${col(r.rel)}" data-w="${w}"></span></div>
-      <div class="rel-count"><div class="n">${fmtFull(r.sum)}</div>${rng?`<div class="r">range ${rng}</div>`:''}</div>
+      <div class="rel-count"><div class="n">${fmtFull(r.sum)}${suffix||''}</div>${rng?`<div class="r">range ${rng}</div>`:''}</div>
     </div>`;
-  }).join('');
+  };
+  let html=kill.map(r=>rowHtml(r,killMax,'','')).join('');
   html+=`<div class="scale-note">Bars are scaled to the largest group in this view. Use the era buttons to compare at a readable scale. Click a group to see its record.</div>`;
+  if(annualG.length){
+    html+=`<div class="secttl" style="margin-top:4px">Related — per year, recurring <span>— shown at your request, scaled separately, and NOT counted among the killings</span></div>`;
+    html+=annualG.map(r=>rowHtml(r,annMax,' / yr', r.contested?' <span class="tag contested">contested</span>':(r.natural?' <span class="tag" style="background:#6b7a93">natural loss</span>':''))).join('');
+  }
   if(excluded.length){ html+=`<div class="scale-note">Not counted above (share by religion contested): ${excluded.map(e=>e.event.replace(/ —.*/,'')+' ('+yrs(e)+')').join('; ')}. See Timeline.</div>`; }
   if(state.lens==='children') html+=renderChildStats();
   return html;
