@@ -593,13 +593,15 @@ function boot(){
 (function(){
   const h=document.querySelector('.brand h1'); if(!h) return;
   const orig=h.innerHTML;
-  const states=[orig,'<span class="pray">🙏</span>','<span class="pray">🕊️</span>'];
+  const states=[orig,'<span class="pray">🙏</span>','<span class="pray">🕊️</span>','<span class="pray">✝️</span>'];
   let i=0;
   h.addEventListener('dblclick',()=>{ i=(i+1)%states.length; h.innerHTML=states[i]; });
 })();
 
 // fetch live data (updatable without a redeploy); fall back to inline
-fetch('data.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(d&&d.events&&d.events.length){DATA=d;}}).catch(()=>{}).finally(boot);
+fetch('data.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject())
+  .catch(()=>fetch('https://remembrance.coconvo.workers.dev/data.json',{cache:'no-store'}).then(r=>r.json())) // works even in a local/file preview
+  .then(d=>{if(d&&d.events&&d.events.length){DATA=d;}}).catch(()=>{}).finally(boot);
 </script>
 </body>
 </html>

@@ -2,3 +2,4 @@
   Cache-Control: no-cache
 /data.json
   Cache-Control: no-store
+  Access-Control-Allow-Origin: *
