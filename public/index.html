@@ -44,6 +44,9 @@ header{padding:34px 0 6px}
 .brand h1{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:38px;letter-spacing:-.01em;margin:0;color:#1e2c45}
 .brand h1 .dot{background:linear-gradient(120deg,var(--blue),#c361a0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand .sub{margin-top:4px;font-size:13.5px;color:var(--muted)}
+.brand h1{cursor:pointer;user-select:none;-webkit-user-select:none}
+.brand h1 .pray{display:inline-block;animation:prayIn .55s cubic-bezier(.22,.61,.36,1)}
+@keyframes prayIn{from{opacity:0;transform:scale(.55) rotate(-4deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 .tabs{justify-self:end;display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:var(--shadow-sm);gap:2px}
 .tabs button{border:0;background:none;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--muted);
   padding:8px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:.15s}
@@ -550,6 +553,15 @@ function boot(){
   $('#updatedTxt').textContent='Last updated '+(DATA.updated||'—')+' · data refreshes as new reports are verified';
   setLens('faith');
 }
+// double-click the wordmark to cycle: Remembrance. → 🙏 → 🕊️ → back
+(function(){
+  const h=document.querySelector('.brand h1'); if(!h) return;
+  const orig=h.innerHTML;
+  const states=[orig,'<span class="pray">🙏</span>','<span class="pray">🕊️</span>'];
+  let i=0;
+  h.addEventListener('dblclick',()=>{ i=(i+1)%states.length; h.innerHTML=states[i]; });
+})();
+
 // fetch live data (updatable without a redeploy); fall back to inline
 fetch('data.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(d&&d.events&&d.events.length){DATA=d;}}).catch(()=>{}).finally(boot);
 </script>
