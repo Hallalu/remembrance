@@ -195,5 +195,47 @@
       {"stat":"186","label":"children killed in the 2004 Beslan school siege.","src":"CNN"},
       {"stat":"~73M/yr","label":"induced abortions worldwide (WHO) — shown as data; its moral status is deeply contested and it is kept out of the killings totals.","src":"WHO"}
     ]
+  },
+  "abortion": {
+    "disclaimer": "You asked for abortion (the 'unborn child') as a category, so it's here — but strictly as statistics, NOT as a settled claim that abortion is the killing of a child. Whether an abortion ends the life of a child or person is one of the most contested moral, religious and legal questions; there is no consensus, abortion is legal in most countries, and law and medicine generally do not treat it as homicide. These figures are kept entirely separate from every killing recorded elsewhere and are added to no total. This site takes no side.",
+    "worldwidePerYear": 73000000,
+    "worldwidePerDay": 200000,
+    "usLatest": 1130000,
+    "usLatestNote": "≈1.13M in 2025 (#WeCount) · ≈1.04M in 2024 (Guttmacher, formal care) — the highest US level in over a decade, risen since the 2022 Dobbs ruling via medication abortion and travel",
+    "byRaceUS": [
+      {"group":"Black","pct":41.5,"color":"#4F7CD4"},
+      {"group":"White","pct":30.2,"color":"#7A6AD0"},
+      {"group":"Hispanic","pct":21.8,"color":"#E0863B"},
+      {"group":"Other","pct":6.5,"color":"#2E9E78"}
+    ],
+    "byCountry": [
+      {"country":"India","n":15600000,"note":"~15.6M (2015, Guttmacher/IIPS)"},
+      {"country":"China","n":9000000,"note":"~9M, official, declining"},
+      {"country":"United States","n":930160,"note":"2020 (Guttmacher)"}
+    ],
+    "counter": [
+      {"topic":"'It is / isn't killing' — there is no consensus","body":"Most legal systems and roughly half the world do not classify abortion as homicide; many religious and philosophical traditions do regard it as the taking of a life. This site takes no side and does not count it among the killings."},
+      {"topic":"Higher rates among Black women reflect access, not targeting","body":"US CDC data show a higher abortion rate among Black women — a statistic sometimes weaponised as 'Black genocide'. Public-health researchers and reproductive-rights organisations attribute the gap to disparities in contraception access, healthcare and income, and reject the 'genocide' framing. It is contested and shown here only with that caveat."},
+      {"topic":"The numbers vary by source","body":"WHO estimates ~73M induced abortions a year worldwide (~200,000 a day). US figures differ: Guttmacher counts ~930,000 (2020); the CDC counts ~626,000 (2021) but excludes several states including California. By-country counts are led by India and China because of population size, not rate."}
+    ],
+    "sources": [
+      {"name":"WHO","what":"Abortion fact sheet (~73M/yr)","url":"https://www.who.int/news-room/fact-sheets/detail/abortion"},
+      {"name":"Guttmacher","what":"US & worldwide abortion statistics","url":"https://www.guttmacher.org/fact-sheet/induced-abortion-worldwide"},
+      {"name":"CDC","what":"Abortion Surveillance — US, 2021 (by race)","url":"https://www.cdc.gov/mmwr/volumes/72/ss/ss7209a1.htm"}
+    ]
+  },
+  "miscarriage": {
+    "perYear": 23000000,
+    "perMinute": 44,
+    "stillbirthsPerYear": 1900000,
+    "note": "Miscarriage and stillbirth are NATURAL pregnancy loss — not a killing by anyone's definition. Shown for completeness at your request. ~23 million miscarriages a year (~44 a minute; ~15% of recognised pregnancies) and ~1.9 million stillbirths a year (~1 every 17 seconds).",
+    "sources": [{"name":"The Lancet (2021)","url":"https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(21)00682-6/abstract"},{"name":"UNICEF (2023)","url":"https://data.unicef.org/topic/child-survival/stillbirths/"}]
+  },
+  "enslavedChildren": {
+    "inModernSlaveryNow": 12300000,
+    "inForcedLabour": 3300000,
+    "inChildLabour": 160000000,
+    "note": "Enslavement is a grave harm but not a death — shown separately, not as a killing. On any given day today ~12.3 million children are in modern slavery (of 49.6M people total, ILO/Walk Free 2021), including ~3.3 million in forced labour; ~160 million children are in child labour. Historically, roughly a quarter of the ~12.5 million people trafficked in the transatlantic trade were children.",
+    "sources": [{"name":"ILO / Walk Free / IOM (2022)","url":"https://www.walkfree.org/reports/global-estimates-of-modern-slavery-2022/"},{"name":"ILO child labour","url":"https://www.ilo.org/resource/news/40-million-modern-slavery-and-152-million-child-labour-around-world"}]
   }
 }

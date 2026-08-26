@@ -210,6 +210,18 @@ footer .mem{font-family:"Playfair Display",serif;font-style:italic;font-size:15p
 .navbar .lensbtn[aria-pressed="true"]{background:linear-gradient(120deg,var(--blue-2),var(--blue));color:#fff}
 .navbar #tabs button[aria-selected="true"]{background:var(--blue-wash);color:var(--blue)}
 @media(max-width:640px){.navdiv{display:none}.navbar{gap:2px}}
+/* related-statistics cards (children lens) */
+.statcard{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 22px;background:#fff}
+.statcard .sh{font-weight:700;font-size:15.5px;margin-bottom:8px}
+.statcard.abt{border-color:#f0d9bd;background:#fffdf8}
+.abt-disc{background:#fff6ec;border:1px solid #f4e3cd;color:#7a5a2a;border-radius:10px;padding:11px 13px;font-size:12.5px;line-height:1.55;margin:0 0 12px}
+.statrow{font-size:14px;color:var(--ink-soft);margin:7px 0}
+.statrow b{color:var(--ink);font-family:"Playfair Display",serif;font-size:17px}
+.statrow2{font-size:13px;color:var(--ink-soft);margin:3px 0}
+.statrow2 span{color:var(--muted);font-size:11.5px}
+.mini{font-size:12px;color:var(--muted);margin:10px 0 6px;font-weight:600}
+.mininote{font-size:12.5px;color:var(--muted);line-height:1.55;margin:8px 0 0}
+@media(max-width:820px){.statcard{margin:12px 12px}}
 /* per-group bars in charts */
 .gbars{display:flex;flex-direction:column;gap:10px}
 .gbar{display:grid;grid-template-columns:118px 1fr 74px;align-items:center;gap:10px}
@@ -362,6 +374,7 @@ function renderByReligion(){
   }).join('');
   html+=`<div class="scale-note">Bars are scaled to the largest group in this view. Use the era buttons to compare at a readable scale. Click a group to see its record.</div>`;
   if(excluded.length){ html+=`<div class="scale-note">Not counted above (share by religion contested): ${excluded.map(e=>e.event.replace(/ —.*/,'')+' ('+yrs(e)+')').join('; ')}. See Timeline.</div>`; }
+  if(state.lens==='children') html+=renderChildStats();
   return html;
 }
 
@@ -448,6 +461,27 @@ function renderCharts(){
     ${countryCard}
     ${perDayCard}
   </div>`;
+}
+
+function renderChildStats(){
+  const F=LENS.faith||DATA; const a=F.abortion,m=F.miscarriage,e=F.enslavedChildren;
+  if(!a&&!m&&!e) return '';
+  let h=`<div class="secttl" style="margin-top:18px">Related statistics <span>— requested; each is a different thing and NONE are counted among the killings above</span></div>`;
+  if(a){
+    const rMax=Math.max.apply(null,a.byRaceUS.map(x=>x.pct));
+    const race=a.byRaceUS.map(x=>`<div class="gbar"><div class="gbl"><span class="reldot" style="background:${x.color}"></span>${x.group}</div><div class="track sm"><span class="efill" style="width:${(x.pct/rMax*100).toFixed(1)}%;background:${x.color}"></span></div><div class="gbv">${x.pct}%</div></div>`).join('');
+    const ctry=a.byCountry.map(c=>`<div class="statrow2">${c.country}: <b>${fmtFull(c.n)}</b> <span>· ${c.note}</span></div>`).join('');
+    h+=`<div class="statcard abt"><div class="sh">Abortion — the “unborn child” (morally contested)</div><div class="abt-disc">${a.disclaimer}</div>
+      <div class="statrow"><b>~${(a.worldwidePerYear/1e6).toFixed(0)}M</b> reported abortions worldwide / year (WHO) · ~${fmtFull(a.worldwidePerDay)} a day today</div>
+      <div class="statrow"><b>~${(a.usLatest/1e6).toFixed(2)}M</b> in the US / year — ${a.usLatestNote}</div>
+      <div class="mini">US share by reported race (CDC 2021):</div><div class="gbars">${race}</div>
+      <div class="mini">Largest by count (population-driven, not rate):</div>${ctry}
+      <div class="mini" style="margin-top:10px">Context &amp; counter-evidence:</div>
+      ${a.counter.map(c=>`<div class="dbt"><div class="dq">${c.topic}</div><p>${c.body}</p></div>`).join('')}</div>`;
+  }
+  if(m){h+=`<div class="statcard"><div class="sh">Miscarriage &amp; stillbirth — natural pregnancy loss (not a killing)</div><div class="statrow"><b>~${(m.perYear/1e6).toFixed(0)}M</b> miscarriages / year (~${m.perMinute} a minute) · <b>~${(m.stillbirthsPerYear/1e6).toFixed(1)}M</b> stillbirths / year</div><p class="mininote">${m.note}</p></div>`;}
+  if(e){h+=`<div class="statcard"><div class="sh">Enslaved children — today (a grave harm, not a death)</div><div class="statrow"><b>~${(e.inModernSlaveryNow/1e6).toFixed(1)}M</b> children in modern slavery right now · ~${(e.inForcedLabour/1e6).toFixed(1)}M in forced labour · ~${(e.inChildLabour/1e6).toFixed(0)}M in child labour</div><p class="mininote">${e.note}</p></div>`;}
+  return h;
 }
 
 function renderRecent(){
